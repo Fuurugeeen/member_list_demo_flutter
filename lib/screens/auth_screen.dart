@@ -22,6 +22,18 @@ class _AuthScreenState extends State<AuthScreen> {
   String? _errorMessage;
 
   @override
+  void initState() {
+    super.initState();
+    // テスト用にパスワードを初期設定
+    final testPassword = widget.mode == AppMode.view ? 'view123' : 'edit456';
+    _passwordController.text = testPassword;
+    // テスト用に自動ログイン（開発時のみ）
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _authenticate();
+    });
+  }
+
+  @override
   void dispose() {
     _passwordController.dispose();
     super.dispose();

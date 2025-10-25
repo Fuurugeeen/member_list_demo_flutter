@@ -5,6 +5,7 @@ class Member {
     required this.email,
     required this.phone,
     required this.department,
+    required this.company,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -16,6 +17,7 @@ class Member {
       email: json['email'] as String,
       phone: json['phone'] as String,
       department: json['department'] as String,
+      company: json['company'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -26,6 +28,7 @@ class Member {
   final String email;
   final String phone;
   final String department;
+  final String company;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -35,6 +38,7 @@ class Member {
     String? email,
     String? phone,
     String? department,
+    String? company,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -44,6 +48,7 @@ class Member {
       email: email ?? this.email,
       phone: phone ?? this.phone,
       department: department ?? this.department,
+      company: company ?? this.company,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -56,6 +61,7 @@ class Member {
       'email': email,
       'phone': phone,
       'department': department,
+      'company': company,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
@@ -72,6 +78,6 @@ class Member {
 
   @override
   String toString() {
-    return 'Member(id: $id, name: $name, email: $email, phone: $phone, department: $department)';
+    return 'Member(id: $id, name: $name, email: $email, phone: $phone, department: $department, company: $company)';
   }
 }

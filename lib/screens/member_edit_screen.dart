@@ -22,6 +22,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
   late final TextEditingController _emailController;
   late final TextEditingController _phoneController;
   late final TextEditingController _departmentController;
+  late final TextEditingController _companyController;
 
   bool _isLoading = false;
   bool get _isEditing => widget.member != null;
@@ -33,6 +34,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
     _emailController = TextEditingController(text: widget.member?.email ?? '');
     _phoneController = TextEditingController(text: widget.member?.phone ?? '');
     _departmentController = TextEditingController(text: widget.member?.department ?? '');
+    _companyController = TextEditingController(text: widget.member?.company ?? '');
   }
 
   @override
@@ -41,6 +43,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
     _emailController.dispose();
     _phoneController.dispose();
     _departmentController.dispose();
+    _companyController.dispose();
     super.dispose();
   }
 
@@ -60,6 +63,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
       email: _emailController.text.trim(),
       phone: _phoneController.text.trim(),
       department: _departmentController.text.trim(),
+      company: _companyController.text.trim(),
       createdAt: widget.member?.createdAt ?? now,
       updatedAt: now,
     );
@@ -185,6 +189,21 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return '部署を入力してください';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _companyController,
+                      decoration: const InputDecoration(
+                        labelText: '会社名',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.domain),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return '会社名を入力してください';
                         }
                         return null;
                       },

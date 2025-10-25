@@ -115,6 +115,12 @@ class _MemberListScreenState extends State<MemberListScreen> {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(member.company, 
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.blue[700],
+                              ),
+                            ),
                             Text('${member.department} | ${member.email}'),
                             Text(member.phone),
                           ],
