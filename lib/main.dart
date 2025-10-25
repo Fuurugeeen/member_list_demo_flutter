@@ -13,7 +13,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final _router = GoRouter(
+  final GoRouter _router = GoRouter(
     routes: [
       GoRoute(
         path: '/',
@@ -46,9 +46,9 @@ class MyApp extends StatelessWidget {
 }
 
 class AppWrapper extends StatefulWidget {
-  final AppMode mode;
-
   const AppWrapper({super.key, required this.mode});
+
+  final AppMode mode;
 
   @override
   State<AppWrapper> createState() => _AppWrapperState();

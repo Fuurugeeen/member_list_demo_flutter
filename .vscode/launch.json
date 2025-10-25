@@ -1,0 +1,56 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter: Default Mode",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-port=3000"
+            ]
+        },
+        {
+            "name": "Flutter: View Mode",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-port=3000"
+            ],
+            "env": {
+                "FLUTTER_WEB_URL": "http://localhost:3000/?mode=view"
+            }
+        },
+        {
+            "name": "Flutter: Edit Mode",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-port=3000"
+            ],
+            "env": {
+                "FLUTTER_WEB_URL": "http://localhost:3000/?mode=edit"
+            }
+        },
+        {
+            "name": "Flutter: Production Build",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "web-server",
+                "--web-port=3000",
+                "--release"
+            ]
+        }
+    ]
+}

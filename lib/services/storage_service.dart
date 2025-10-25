@@ -14,8 +14,9 @@ class StorageService {
     }
     
     try {
-      final List<dynamic> membersList = jsonDecode(membersJson);
-      return membersList.map((json) => Member.fromJson(json)).toList();
+      final dynamic decoded = jsonDecode(membersJson);
+      final List<dynamic> membersList = decoded as List<dynamic>;
+      return membersList.map((dynamic json) => Member.fromJson(json as Map<String, dynamic>)).toList();
     } catch (e) {
       return _getDefaultMembers();
     }

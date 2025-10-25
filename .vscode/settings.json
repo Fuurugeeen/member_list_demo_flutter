@@ -1,0 +1,13 @@
+{
+    "dart.flutterRunAdditionalArgs": [
+        "--web-port=3000"
+    ],
+    "files.associations": {
+        "*.dart": "dart"
+    },
+    "editor.formatOnSave": true,
+    "dart.previewFlutterUiGuides": true,
+    "dart.previewFlutterUiGuidesCustomTracking": true,
+    "flutter.debugExternalPackageLibraries": false,
+    "flutter.debugSdkLibraries": false
+}
