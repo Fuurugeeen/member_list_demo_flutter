@@ -7,6 +7,12 @@ help:
 	@echo "  make build   - Build web application"
 	@echo "  make release - Create release commit and deploy"
 	@echo "  make clean   - Clean build artifacts"
+	@echo ""
+	@echo "Documentation update rules:"
+	@echo "  - Screen layout changes: Update docs/wireframes.md"
+	@echo "  - New features: Add new sections to wireframes"
+	@echo "  - Flow changes: Update user flow diagrams"
+	@echo "  - Always record change reason and date in update history"
 
 # 開発サーバー起動
 dev:
