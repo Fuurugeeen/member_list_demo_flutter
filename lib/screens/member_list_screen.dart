@@ -39,12 +39,6 @@ class _MemberListScreenState extends State<MemberListScreen> {
     });
   }
 
-  Future<void> _logout() async {
-    await _authService.logout(widget.mode);
-    if (mounted) {
-      Navigator.of(context).pushReplacementNamed('/');
-    }
-  }
 
   Future<void> _deleteMember(Member member) async {
     final confirmed = await showDialog<bool>(
@@ -84,13 +78,6 @@ class _MemberListScreenState extends State<MemberListScreen> {
       appBar: AppBar(
         title: Text(widget.mode == AppMode.view ? '名簿一覧' : '名簿編集'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        actions: [
-          IconButton(
-            onPressed: _logout,
-            icon: const Icon(Icons.logout),
-            tooltip: 'ログアウト',
-          ),
-        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
