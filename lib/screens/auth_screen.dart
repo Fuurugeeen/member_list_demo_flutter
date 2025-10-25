@@ -28,8 +28,11 @@ class _AuthScreenState extends State<AuthScreen> {
     final testPassword = widget.mode == AppMode.view ? 'view123' : 'edit456';
     _passwordController.text = testPassword;
     // テスト用に自動ログイン（開発時のみ）
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _authenticate();
+    // 画面レンダリング後に少し遅延させて実行
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (mounted) {
+        _authenticate();
+      }
     });
   }
 

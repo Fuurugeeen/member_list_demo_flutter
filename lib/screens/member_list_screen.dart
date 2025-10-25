@@ -18,13 +18,23 @@ class MemberListScreen extends StatefulWidget {
 class _MemberListScreenState extends State<MemberListScreen> {
   final _storageService = StorageService();
   final _authService = AuthService();
+  final _searchController = TextEditingController();
   List<Member> _members = [];
+  List<Member> _filteredMembers = [];
   bool _isLoading = true;
+  bool _isSearchActive = false;
 
   @override
   void initState() {
     super.initState();
     _loadMembers();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadMembers() async {
@@ -35,7 +45,34 @@ class _MemberListScreenState extends State<MemberListScreen> {
     final members = await _storageService.getAllMembers();
     setState(() {
       _members = members;
+      _filteredMembers = members;
       _isLoading = false;
+    });
+  }
+
+  void _onSearchChanged() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      _isSearchActive = query.isNotEmpty;
+      if (query.isEmpty) {
+        _filteredMembers = _members;
+      } else {
+        _filteredMembers = _members.where((member) {
+          return member.name.toLowerCase().contains(query) ||
+                 member.company.toLowerCase().contains(query) ||
+                 member.department.toLowerCase().contains(query) ||
+                 member.email.toLowerCase().contains(query) ||
+                 member.phone.contains(query);
+        }).toList();
+      }
+    });
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
+    setState(() {
+      _isSearchActive = false;
+      _filteredMembers = _members;
     });
   }
 
@@ -95,9 +132,6 @@ class _MemberListScreenState extends State<MemberListScreen> {
                         vertical: 4,
                       ),
                       child: ListTile(
-                        leading: CircleAvatar(
-                          child: Text(member.name.isNotEmpty ? member.name[0] : '?'),
-                        ),
                         title: Text(member.name),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

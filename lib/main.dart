@@ -82,8 +82,9 @@ class _AppWrapperState extends State<AppWrapper> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
