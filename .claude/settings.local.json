@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter create:*)",
+      "Bash(flutter:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}
