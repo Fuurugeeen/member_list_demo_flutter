@@ -4,7 +4,7 @@
 
 ## プロジェクト概要
 
-「member_list_demo_flutter」というFlutter Webアプリケーションで、メンバーリストインターフェースのデモプロジェクトです。Web配信専用に設定されており、GitHub Pagesでホスティングされます。
+「member_list_demo_flutter」はFlutter Webで構築されたメンバー名簿管理アプリケーションです。URLクエリパラメータによるモード切り替え（閲覧/編集）、パスワード認証、検索機能を備えたモダンなWebアプリです。Web配信専用に設定されており、GitHub Pagesでホスティングされます。
 
 ## 開発コマンド
 
@@ -27,21 +27,39 @@
 ## アーキテクチャ
 
 - **対象プラットフォーム**: Web専用（非Webプラットフォームサポートは削除済み）
-- **エントリーポイント**: `lib/main.dart`に標準的なFlutterカウンターデモアプリが含まれています
-- **テスト**: `test/widget_test.dart`に基本的なウィジェットテスト
+- **エントリーポイント**: `lib/main.dart`にgo_routerベースのルーティングとモード切り替え機能が実装されています
+- **認証システム**: URLクエリによるモード切り替え（?mode=view/edit）とパスワード認証
+- **データ管理**: SharedPreferencesによるローカルストレージとCRUD操作
+- **検索機能**: 全フィールド対応の高速検索とフィルタリング
+- **UIデザイン**: Material Design 3とレスポンシブデザイン
 - **デプロイ**: コミットメッセージに「release」が含まれた際のGitHub Actions自動化
 
-## 主要設定
+## 主要機能
+
+### 認証・モード切り替え
+- **URLクエリベース**: `?mode=view`（閲覧）/ `?mode=edit`（編集）
+- **パスワード認証**: 閲覧モード `view123` / 編集モード `edit456`
+- **セッション管理**: SharedPreferencesによる認証状態保持
+
+### メンバー管理機能
+- **CRUD操作**: 新規登録、編集、削除（編集モードのみ）
+- **データフィールド**: 名前、会社名、部署、メール、電話番号
+- **検索機能**: 全フィールド対象のリアルタイム検索
+- **初期データ**: 10名の多様な企業・部署のサンプルメンバー
+
+### UI・UX
+- **シンプルデザイン**: アバター・ログアウトボタンなしのクリーンUI
+- **レスポンシブ**: モバイルファーストのカード型レイアウト
+- **Material Design 3**: ビジネス向けテーマカラー
+- **アクセシビリティ**: 適切なコントラスト比とタッチターゲット
+
+## 技術設定
 
 - **Flutter SDK**: 3.27.2（stableチャンネル）
 - **Dart SDK**: ^3.6.1
-- **リンティング**: `flutter_lints`をベースに厳格なlintルールを適用
-  - 厳格な型チェック（strict-casts, strict-inference, strict-raw-types）
-  - コードスタイル統一（single quotes, const constructors, final declarations）
-  - パフォーマンス最適化ルール
-  - セキュリティルール
-- **依存関係**: `cupertino_icons`, `go_router`, `shared_preferences`
+- **主要依存関係**: `go_router`, `shared_preferences`, `cupertino_icons`
 - **ビルドターゲット**: GitHub Pages用base href `/member_list_demo_flutter/`でのWeb
+- **リンティング**: 厳格なlintルール適用（型チェック、スタイル統一、セキュリティ）
 
 ## デプロイワークフロー
 
@@ -68,17 +86,19 @@
 
 ## テスト・デバッグ機能
 
-### 自動ログイン機能（開発用）
-- **動作**: アプリ起動時に自動でログインが実行されます
-- **パスワード事前入力**: モードに応じて適切なパスワードが自動設定されます
-  - 閲覧モード: `view123`
-  - 編集モード: `edit456`
-- **目的**: 開発・テスト時の手間を削減
+### 開発用パスワード
+- **閲覧モード**: `view123`
+- **編集モード**: `edit456`
 
-### アクセス方法
+### ローカル開発アクセス
 - デフォルト: `http://localhost:3000/`
 - 閲覧モード: `http://localhost:3000/?mode=view`
 - 編集モード: `http://localhost:3000/?mode=edit`
+
+### 本番環境アクセス
+- デフォルト: `https://furugen.github.io/member_list_demo_flutter/`
+- 閲覧モード: `https://furugen.github.io/member_list_demo_flutter/?mode=view`
+- 編集モード: `https://furugen.github.io/member_list_demo_flutter/?mode=edit`
 
 ## ドキュメント管理
 
