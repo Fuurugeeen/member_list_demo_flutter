@@ -7,7 +7,7 @@ help:
 	@echo "  make dev-view  - Start development server in view mode"
 	@echo "  make dev-edit  - Start development server in edit mode"
 	@echo "  make build     - Build web application"
-	@echo "  make release   - Build, create release commit and deploy"
+	@echo "  make release   - Update version, build, commit and deploy"
 	@echo "  make clean     - Clean build artifacts"
 	@echo ""
 	@echo "Debug access URLs:"
@@ -32,6 +32,9 @@ dev:
 
 # 開発サーバー起動（閲覧モード）
 dev-view:
+	@echo "Building web application..."
+	flutter pub get
+	flutter build web --release
 	@echo "Starting development server in VIEW mode"
 	@echo "Access: http://localhost:3000/?mode=view"
 	@echo "Password: view123"
@@ -39,6 +42,9 @@ dev-view:
 
 # 開発サーバー起動（編集モード）
 dev-edit:
+	@echo "Building web application..."
+	flutter pub get
+	flutter build web --release
 	@echo "Starting development server in EDIT mode"
 	@echo "Access: http://localhost:3000/?mode=edit"
 	@echo "Password: edit456"
@@ -49,16 +55,23 @@ build:
 	flutter pub get
 	flutter build web --release
 
-# リリース実行（ビルド + 空コミット + プッシュ）
+# リリース実行（バージョン更新 + ビルド + コミット + プッシュ）
 release:
-	@echo "Building web application..."
-	flutter pub get
-	flutter build web --release
-	@echo "Creating release commit..."
-	@read -p "Enter release version (e.g., v1.0.0): " version; \
-	git commit --allow-empty -m "release: $$version"; \
-	git push origin main
-	@echo "Release commit pushed. GitHub Actions will deploy automatically."
+	@echo "Current version in pubspec.yaml:"
+	@grep "^version:" pubspec.yaml
+	@echo ""
+	@read -p "Enter new version (e.g., 1.0.1): " version; \
+	echo "Updating pubspec.yaml to version $$version..."; \
+	sed -i.bak "s/^version: .*/version: $$version/" pubspec.yaml; \
+	rm pubspec.yaml.bak; \
+	echo "Building web application..."; \
+	flutter pub get; \
+	flutter build web --release; \
+	echo "Creating release commit..."; \
+	git add pubspec.yaml; \
+	git commit -m "release: v$$version"; \
+	git push origin main; \
+	echo "Release v$$version pushed. GitHub Actions will deploy automatically."
 
 # ビルド成果物削除
 clean:
