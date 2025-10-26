@@ -219,16 +219,6 @@ class _MemberListScreenState extends State<MemberListScreen> {
                                     vertical: 4,
                                   ),
                                   child: ListTile(
-                                    leading: CircleAvatar(
-                                      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                                      child: Text(
-                                        member.name.isNotEmpty ? member.name[0] : '?',
-                                        style: TextStyle(
-                                          color: Theme.of(context).colorScheme.onPrimaryContainer,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
                                     title: Text(member.name),
                                     subtitle: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
