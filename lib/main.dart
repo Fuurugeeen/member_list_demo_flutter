@@ -5,6 +5,7 @@ import 'screens/auth_screen.dart';
 import 'screens/member_list_screen.dart';
 import 'screens/member_edit_screen.dart';
 import 'models/member.dart';
+import 'theme/business_theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,10 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Member List Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
+      theme: BusinessTheme.lightTheme,
       routerConfig: _router,
     );
   }

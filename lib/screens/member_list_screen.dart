@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/member.dart';
 import '../services/auth_service.dart';
 import '../services/storage_service.dart';
+import '../theme/business_theme.dart';
 
 class MemberListScreen extends StatefulWidget {
   const MemberListScreen({
@@ -109,12 +110,120 @@ class _MemberListScreenState extends State<MemberListScreen> {
     ).then((_) => _loadMembers());
   }
 
+  Widget _buildMemberCard(Member member) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: InkWell(
+        onTap: widget.mode == AppMode.edit
+            ? () => _editMember(member)
+            : null,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: BusinessTheme.mobileCardPadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      member.name,
+                      style: BusinessTheme.memberNameStyle,
+                    ),
+                  ),
+                  if (widget.mode == AppMode.edit)
+                    PopupMenuButton<String>(
+                      onSelected: (value) {
+                        if (value == 'edit') {
+                          _editMember(member);
+                        } else if (value == 'delete') {
+                          _deleteMember(member);
+                        }
+                      },
+                      icon: Icon(
+                        Icons.more_vert,
+                        size: 24,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 'edit',
+                          child: Row(
+                            children: [
+                              Icon(Icons.edit_outlined, size: 20),
+                              SizedBox(width: 12),
+                              Text('編集'),
+                            ],
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 'delete',
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete_outlined, size: 20),
+                              SizedBox(width: 12),
+                              Text('削除'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+              const SizedBox(height: BusinessTheme.mobileElementSpacing),
+              Text(
+                member.company,
+                style: BusinessTheme.memberCompanyStyle,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                member.department,
+                style: BusinessTheme.memberDepartmentStyle,
+              ),
+              const SizedBox(height: BusinessTheme.mobileCardSpacing),
+              Row(
+                children: [
+                  Icon(
+                    Icons.email_outlined,
+                    size: BusinessTheme.mobileIconSize,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      member.email,
+                      style: BusinessTheme.memberContactStyle,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(
+                    Icons.phone_outlined,
+                    size: BusinessTheme.mobileIconSize,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    member.phone,
+                    style: BusinessTheme.memberContactStyle,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.mode == AppMode.view ? '名簿一覧' : '名簿編集'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
             onPressed: () async {
@@ -134,43 +243,48 @@ class _MemberListScreenState extends State<MemberListScreen> {
               children: [
                 // 検索バー
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: BusinessTheme.mobileSearchPadding,
                   child: TextField(
                     controller: _searchController,
+                    style: const TextStyle(fontSize: 16),
                     decoration: InputDecoration(
                       hintText: '名前、会社名、部署、メール、電話番号で検索...',
-                      prefixIcon: const Icon(Icons.search),
+                      hintStyle: BusinessTheme.searchHintStyle,
+                      prefixIcon: Icon(
+                        Icons.search,
+                        size: BusinessTheme.mobileIconSize,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                       suffixIcon: _isSearchActive
                           ? IconButton(
                               onPressed: _clearSearch,
-                              icon: const Icon(Icons.clear),
+                              icon: const Icon(
+                                Icons.clear,
+                                size: BusinessTheme.mobileIconSize,
+                              ),
                               tooltip: '検索をクリア',
                             )
                           : null,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      filled: true,
-                      fillColor: Theme.of(context).colorScheme.surface,
                     ),
                   ),
                 ),
                 // 検索結果の件数表示
                 if (_isSearchActive)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     child: Row(
                       children: [
                         Icon(
-                          Icons.search,
-                          size: 16,
+                          Icons.search_outlined,
+                          size: 18,
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                         const SizedBox(width: 8),
                         Text(
                           '${_filteredMembers.length}件の検索結果',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
@@ -211,67 +325,10 @@ class _MemberListScreenState extends State<MemberListScreen> {
                             )
                           : ListView.builder(
                               itemCount: _filteredMembers.length,
+                              padding: const EdgeInsets.only(bottom: 100),
                               itemBuilder: (context, index) {
                                 final member = _filteredMembers[index];
-                                return Card(
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 4,
-                                  ),
-                                  child: ListTile(
-                                    title: Text(member.name),
-                                    subtitle: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          member.company, 
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.blue[700],
-                                          ),
-                                        ),
-                                        Text('${member.department} | ${member.email}'),
-                                        Text(member.phone),
-                                      ],
-                                    ),
-                                    trailing: widget.mode == AppMode.edit
-                                        ? PopupMenuButton<String>(
-                                            onSelected: (value) {
-                                              if (value == 'edit') {
-                                                _editMember(member);
-                                              } else if (value == 'delete') {
-                                                _deleteMember(member);
-                                              }
-                                            },
-                                            itemBuilder: (context) => [
-                                              const PopupMenuItem(
-                                                value: 'edit',
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Icons.edit),
-                                                    SizedBox(width: 8),
-                                                    Text('編集'),
-                                                  ],
-                                                ),
-                                              ),
-                                              const PopupMenuItem(
-                                                value: 'delete',
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Icons.delete),
-                                                    SizedBox(width: 8),
-                                                    Text('削除'),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : null,
-                                    onTap: widget.mode == AppMode.edit
-                                        ? () => _editMember(member)
-                                        : null,
-                                  ),
-                                );
+                                return _buildMemberCard(member);
                               },
                             ),
                 ),

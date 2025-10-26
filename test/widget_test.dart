@@ -1,9 +1,6 @@
-// This is a basic Flutter widget test.
+// Member List Demo Flutter widget tests.
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// Tests for the member list application functionality.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,20 +8,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:member_list_demo_flutter/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('App loads with business theme', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
+    
+    // Wait for initial frame
+    await tester.pump();
+    
+    // Find the MaterialApp to check theme is applied
+    final MaterialApp app = tester.widget(find.byType(MaterialApp));
+    
+    // Verify business theme is applied
+    expect(app.theme?.useMaterial3, isTrue);
+    expect(app.title, equals('Member List Demo'));
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+  testWidgets('App structure is correct', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(MyApp());
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify app has the expected structure
+    expect(find.byType(MaterialApp), findsOneWidget);
+    expect(find.byType(Scaffold), findsOneWidget);
   });
 }
