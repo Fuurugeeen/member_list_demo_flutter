@@ -7,7 +7,7 @@ help:
 	@echo "  make dev-view  - Start development server in view mode"
 	@echo "  make dev-edit  - Start development server in edit mode"
 	@echo "  make build     - Build web application"
-	@echo "  make release   - Create release commit and deploy"
+	@echo "  make release   - Build, create release commit and deploy"
 	@echo "  make clean     - Clean build artifacts"
 	@echo ""
 	@echo "Debug access URLs:"
@@ -49,8 +49,11 @@ build:
 	flutter pub get
 	flutter build web --release
 
-# リリース実行（空コミット + プッシュ）
+# リリース実行（ビルド + 空コミット + プッシュ）
 release:
+	@echo "Building web application..."
+	flutter pub get
+	flutter build web --release
 	@echo "Creating release commit..."
 	@read -p "Enter release version (e.g., v1.0.0): " version; \
 	git commit --allow-empty -m "release: $$version"; \
