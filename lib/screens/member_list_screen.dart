@@ -146,8 +146,8 @@ class _MemberListScreenState extends State<MemberListScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      member.name,
-                      style: BusinessTheme.memberNameStyle,
+                      member.company,
+                      style: BusinessTheme.memberCompanyStyle,
                     ),
                   ),
                   if (widget.mode == AppMode.edit)
@@ -191,8 +191,8 @@ class _MemberListScreenState extends State<MemberListScreen> {
               ),
               const SizedBox(height: BusinessTheme.mobileElementSpacing),
               Text(
-                member.company,
-                style: BusinessTheme.memberCompanyStyle,
+                member.name,
+                style: BusinessTheme.memberNameStyle,
               ),
               const SizedBox(height: 6),
               Text(
@@ -304,7 +304,9 @@ class _MemberListScreenState extends State<MemberListScreen> {
                                 prefixIcon: Icon(
                                   Icons.search,
                                   size: BusinessTheme.mobileIconSize,
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
                                 ),
                                 suffixIcon: _isSearchActive
                                     ? IconButton(
@@ -329,7 +331,9 @@ class _MemberListScreenState extends State<MemberListScreen> {
                                   Icon(
                                     Icons.search_outlined,
                                     size: 18,
-                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
@@ -354,7 +358,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
                 ),
                 // メンバーリスト
                 if (_members.isEmpty)
-                  SliverFillRemaining(
+                  const SliverFillRemaining(
                     child: Center(
                       child: Text('メンバーが登録されていません'),
                     ),
@@ -368,20 +372,31 @@ class _MemberListScreenState extends State<MemberListScreen> {
                           Icon(
                             Icons.search_off,
                             size: 64,
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                           const SizedBox(height: 16),
                           Text(
                             '検索結果が見つかりません',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
                                 ),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             '他のキーワードで検索してみてください',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
                                 ),
                           ),
                         ],
@@ -430,7 +445,8 @@ class _SearchBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => isSearchActive ? 150.0 : 100.0;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return SizedBox.expand(child: child);
   }
 
